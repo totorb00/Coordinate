@@ -25,6 +25,13 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "mainpp.h"
+#include "DEV_Config.h"
+#include "TCS34725.h"
+#include "string.h"
+#include "stdio.h"
+#include "math.h"
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,6 +75,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c3;
 
 TIM_HandleTypeDef htim2;
@@ -156,6 +164,9 @@ double g_perp[2][1];
 double b_c_encoder[2][2];
 double theta_0=0;
 uint32_t old_couter=0;
+uint8_t color[15];
+RGB rgb;
+UDOUBLE RGB888=0;
 //CAN_FilterTypeDef sFilterConfig;
 //CAN_RxHeaderTypeDef rxHeader;
 //CAN_TxHeaderTypeDef txHeader;
@@ -173,6 +184,7 @@ static void MX_TIM8_Init(void);
 static void MX_I2C3_Init(void);
 static void MX_TIM12_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -340,6 +352,7 @@ int main(void)
   MX_I2C3_Init();
   MX_TIM12_Init();
   MX_TIM2_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim5);
 	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_1);
@@ -412,7 +425,12 @@ int main(void)
 	ha_perp=(g_perp[0][0]*Bb+g_perp[1][0]*Cc)/(g[0][0]*Bb+g[1][0]*Cc);
 	hb_perp=(g_perp[0][0]*g[1][0]-g_perp[1][0]*g[1][1])*Cc/(g[0][0]*Bb+g[1][0]*Cc);
 	hc_perp=-(g_perp[0][0]*g[1][0]-g_perp[1][0]*g[0][0])*Bb/(g[0][0]*Bb+g[1][0]*Cc);
-
+	if(TCS34725_Init() != 0){
+      printf("TCS34725 initialization error!!\n");
+  }
+	else{
+  printf("TCS34725 initialization success!!\n");
+	}
 	HAL_TIM_Base_Start_IT(&htim12);
 	MPU6050_Init();
 	setup();
@@ -422,6 +440,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
+		rgb=TCS34725_Get_RGBData();
+		RGB888=TCS34725_GetRGB888(rgb);
+				color[0]=RGB888>>16 ;
+				color[1]=(RGB888>>8) & 0xff;
+				color[2]=(RGB888) & 0xff;
 		if(interrupt_counter>old_couter)
 		{
 			//omega=(g[0][0]*Speed_EncoderB+g[1][0]*Speed_EncoderC-Speed_EncoderA)/(g[1][1]*Bb+g[1][0]*Cc);
@@ -462,11 +485,11 @@ int main(void)
 			theta_angle=theta*180/M_PI;
 			int16_t rA_x_int16_t = (int16_t)rA[0][0];
 			int16_t rA_y_int16_t = (int16_t)rA[1][0];
-			buffer[0]= angle_X;
-			buffer[1]= angle_Y;
 			buffer[2]= theta_angle;
 			buffer[3]= rA_x_int16_t;
 			buffer[4]= rA_y_int16_t;
+			buffer[0]= angle_X;
+			buffer[1]= angle_Y;
 			loop();
     /* USER CODE END WHILE */
 
@@ -528,6 +551,40 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
 }
 
 /**

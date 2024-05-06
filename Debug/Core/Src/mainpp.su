@@ -37,6 +37,11 @@
 ../Core/Inc/STM32Hardware.h:21:6:int STM32Hardware::read()	16	static
 ../Core/Inc/STM32Hardware.h:26:7:void STM32Hardware::write(uint8_t*, int)	24	static
 ../Core/Inc/STM32Hardware.h:31:16:long unsigned int STM32Hardware::time()	16	static
+../Core/Inc/std_msgs/String.h:18:5:std_msgs::String::String()	16	static
+../Core/Inc/std_msgs/String.h:23:17:virtual int std_msgs::String::serialize(unsigned char*) const	24	static
+../Core/Inc/std_msgs/String.h:34:17:virtual int std_msgs::String::deserialize(unsigned char*)	32	static
+../Core/Inc/std_msgs/String.h:49:26:virtual const char* std_msgs::String::getType()	16	static
+../Core/Inc/std_msgs/String.h:50:26:virtual const char* std_msgs::String::getMD5()	16	static
 ../Core/Inc/std_msgs/MultiArrayDimension.h:22:5:std_msgs::MultiArrayDimension::MultiArrayDimension()	16	static
 ../Core/Inc/std_msgs/MultiArrayDimension.h:29:17:virtual int std_msgs::MultiArrayDimension::serialize(unsigned char*) const	24	static
 ../Core/Inc/std_msgs/MultiArrayDimension.h:50:17:virtual int std_msgs::MultiArrayDimension::deserialize(unsigned char*)	32	static
@@ -54,8 +59,8 @@
 ../Core/Inc/std_msgs/Int16MultiArray.h:79:26:virtual const char* std_msgs::Int16MultiArray::getMD5()	16	static
 ../Core/Inc/ros/node_handle.h:50:7:constexpr ros::NodeHandleBase_::NodeHandleBase_()	16	static
 ../Core/Inc/ros/node_handle.h:104:7:constexpr ros::NodeHandle_<STM32Hardware>::NodeHandle_()	16	static
-../Core/Src/mainpp.cpp:23:6:void setup()	8	static
-../Core/Src/mainpp.cpp:29:6:void loop()	8	static
+../Core/Src/mainpp.cpp:21:6:void setup()	8	static
+../Core/Src/mainpp.cpp:27:6:void loop()	8	static
 ../Core/Inc/ros/msg.h:188:15:static void ros::Msg::varToArr(A, V) [with A = unsigned char*; V = long unsigned int]	24	static
 ../Core/Inc/ros/msg.h:196:15:static void ros::Msg::arrToVar(V&, A) [with V = long unsigned int; A = unsigned char*]	24	static
 ../Core/Inc/ros/node_handle.h:134:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::initNode() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
@@ -68,6 +73,6 @@
 ../Core/Inc/ros/node_handle.h:377:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::setNow(const ros::Time&) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	24	static
 ../Core/Inc/ros/node_handle.h:531:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::logerror(const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
 ../Core/Inc/ros/node_handle.h:510:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::log(char, const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	40	static
-../Core/Src/mainpp.cpp:39:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../Core/Src/mainpp.cpp:34:1:void __static_initialization_and_destruction_0(int, int)	16	static
 ../Core/Inc/ros/node_handle.h:338:16:bool ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::connected() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
-../Core/Src/mainpp.cpp:39:1:cpp)	8	static
+../Core/Src/mainpp.cpp:34:1:cpp)	8	static
