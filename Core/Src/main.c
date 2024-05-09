@@ -166,6 +166,9 @@ double g[2][1];
 double g_perp[2][1];
 double b_c_encoder[2][2];
 double theta_0=0;
+int32_t valueA;
+int32_t valueB;
+int32_t valueC;
 uint32_t old_couter=0;
 uint8_t color[15];
 RGB rgb;
@@ -240,7 +243,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 		int16_t diffA = new_countA - valueA;
 		int16_t diffB = new_countB - valueB;
 		int16_t diffC = new_countC - valueC;
-
+		valueA=new_countA;
+		valueB=new_countB;
+		valueC=new_countC;
 		if (diffA > 32767) {
 			diffA -= 65536; // Handle overflow
 		} else if (diffA < -32767) {
@@ -395,7 +400,40 @@ int main(void)
 	 * [b,c]=[b_encoder,c_encoder]  [4][4]
 	 * inv([b,c])
 	 * a=[2][1]
+			//omega=(g[0][0]*Speed_EncoderB+g[1][0]*Speed_EncoderC-Speed_EncoderA)/(g[1][1]*Bb+g[1][0]*Cc);
+			theta=theta_0+((g[0][0]*distanceB+g[1][0]*distanceC)-distanceA)/(g[0][0]*Bb+g[1][0]*Cc);
+			vA_perp=Speed_EncoderA*ha_perp+Speed_EncoderB*hb_perp+Speed_EncoderC*hc_perp;
+			/*
+	 * Rotation matrix
 	 */
+	RX[0][0]=cos(theta);
+	RX[1][0]=sin(theta);
+	RY[0][0]=-sin(theta);
+	RY[1][0]=cos(theta);
+
+	at[0][0]=a_encoder[0][0]*RX[0][0]+a_encoder[1][0]*RY[0][0];
+	at[1][0]=a_encoder[0][0]*RX[1][0]+a_encoder[1][0]*RY[1][0];
+
+	//			at_perp[0][0]=a_perp[0][0]*RX[0][0]+a_perp[1][0]*RX[0][1];
+	//			at_perp[1][0]=a_perp[0][0]*RY[0][0]+a_perp[1][0]*RY[0][1];
+
+	at_perp[0][0]=a_perp[0][0]*RX[0][0]+a_perp[1][0]*RY[0][0];
+	at_perp[1][0]=a_perp[0][0]*RX[1][0]+a_perp[1][0]*RY[1][0];
+
+	velocity_A[0][0]=Speed_EncoderA*at[0][0];
+	velocity_A[1][0]=Speed_EncoderA*at[1][0];
+
+	velocity_A_perp[0][0]=vA_perp*at_perp[0][0];
+	velocity_A_perp[0][1]=vA_perp*at_perp[1][0];
+
+	A_velocity[0][0]=velocity_A[0][0]+velocity_A_perp[0][0];
+	A_velocity[1][0]=velocity_A[1][0]+velocity_A_perp[1][0];
+	rA[0][0]=rA[0][0]+(A_velocity[0][0]);
+	rA[1][0]=rA[1][0]+(A_velocity[1][0]);
+	MPU6050_Read_Accel();
+	angle_X = Accel_X_Angle(Ax, Ay, Az);
+	angle_Y = Accel_Y_Angle(Ax, Ay, Az);
+	theta_angle=theta*180/M_PI;
 	b_c_encoder[0][0]=b_encoder[0][0];
 	b_c_encoder[1][0]=b_encoder[1][0];
 	b_c_encoder[0][1]=c_encoder[0][0];
@@ -502,8 +540,8 @@ int main(void)
 			int16_t center_x_int16_t = (int16_t)center_last[0][0];
 			int16_t center_y_int16_t = (int16_t)center_last[1][0];
 			buffer[2]= theta_angle;
-			buffer[3]= rA_x_int16_t;
-			buffer[4]= rA_y_int16_t;
+			buffer[3]= center_x_int16_t;
+			buffer[4]= center_y_int16_t;
 			buffer[0]= angle_X;
 			buffer[1]= angle_Y;
 			old_couter=interrupt_counter;
