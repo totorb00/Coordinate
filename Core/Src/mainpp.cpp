@@ -13,7 +13,7 @@
 ros::NodeHandle nh;
 //std_msgs::String str_msg;
 std_msgs::Int16MultiArray Encoder_data;
-extern int16_t buffer[5];
+extern int16_t buffer[8];
 //char hello[] = "Hello world from STM32!";
 //extern int16_t sensor_buff[5];
 //extern int16_t sensor_buff[5];
@@ -32,7 +32,7 @@ void loop(void){
 //	chatter.publish(&str_msg);
 //	nh.spinOnce();
 //	HAL_Delay(1);
-	    Encoder_data.data_length =5;
+	    Encoder_data.data_length =8;
 		Encoder_data.data= buffer;
 		encoder.publish(&Encoder_data);
 		nh.spinOnce();

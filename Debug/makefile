@@ -84,8 +84,8 @@ all: main-build
 main-build: Coordinate.elf secondary-outputs
 
 # Tool invocations
-Coordinate.elf Coordinate.map: $(OBJS) $(USER_OBJS) /home/tutu/STM32CubeIDE/workspace_1.15.1/Coordinate/STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "Coordinate.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/tutu/STM32CubeIDE/workspace_1.15.1/Coordinate/STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Coordinate.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Coordinate.elf Coordinate.map: $(OBJS) $(USER_OBJS) /home/doska/Desktop/Roboconv1/Coordinate/STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "Coordinate.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/doska/Desktop/Roboconv1/Coordinate/STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Coordinate.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

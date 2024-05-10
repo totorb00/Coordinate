@@ -132,7 +132,7 @@ float Ax;
 float Ay;
 float Az;
 
-int16_t buffer[5];
+int16_t buffer[8];
 uint8_t msg1;
 uint8_t msg2;
 uint8_t msg3;
@@ -467,6 +467,9 @@ int main(void)
 			buffer[2]= theta_angle;
 			buffer[3]= rA_x_int16_t;
 			buffer[4]= rA_y_int16_t;
+			buffer[5]= distanceA;
+			buffer[6]= distanceB;
+			buffer[7]= distanceC;
 			loop();
     /* USER CODE END WHILE */
 
